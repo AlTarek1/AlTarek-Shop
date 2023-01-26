@@ -77,6 +77,7 @@ function BtnText() {
   if (addCartButtons.length) {
     addCartButtons.forEach((btn) => {
       const inCart = cart[btn.dataset.i];
+      console.log(btn.dataset.i)
       if (inCart.amount) {
         btn.innerText = "In Cart";
         btn.disabled = true;
@@ -92,9 +93,9 @@ function BtnText() {
 // Functionality Of Products Buttons
 function productBtn() {
   const btns = document.querySelectorAll("#add_to_cart");
-  addCartButtons = btns;
+  addCartButtons = btns;    BtnText();
+
   btns.forEach((btn) => {
-    BtnText();
     btn.addEventListener("click", (e) => {
       const id = e.target.dataset.i;
       e.target.innerText = "In Cart";
