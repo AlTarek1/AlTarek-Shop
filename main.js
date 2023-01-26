@@ -50,7 +50,7 @@ function loadProducts(products) {
       <div class="product">
       <div class="image">
         <img src="${product.image}" alt="" />
-        <button data-i="${i}" id="add_to_cart">Add To Cart</button>
+        <button data-i=${i} id="add_to_cart">Add To Cart</button>
       </div>
       <h3>${product.title}</h3>
       <h4>${product.price}$</h4>
