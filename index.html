@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shop</title>
+    <!-- Font Lato  -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Font AWesome  -->
+    <script
+      src="https://kit.fontawesome.com/d72e93fa06.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- CSS File  -->
+    <link rel="stylesheet" href="main.css" />
+    <!-- JS File  -->
+    <script defer src="main.js"></script>
+  </head>
+  <body>
+    <header>
+      <img src="./images/hero-bcg.jpeg" alt="" />
+      <nav>
+        <div class="navbar">
+          <i class="fa-solid fa-bars"></i>
+          <h4>Yousef <span> Shop</span></h4>
+          <div class="cart-menu">
+            <i class="fa-solid fa-cart-shopping" id="cart_menu"></i>
+            <span id="cart_menu_cnt">0</span>
+          </div>
+        </div>
+      </nav>
+      <div class="header-text">
+        <h1>Furniture Collection</h1>
+        <a href="#products">Shop Now</a>
+      </div>
+    </header>
+    <aside class="overlay">
+      <div class="cart">
+        <span class="close-cart">
+          <i class="fa-solid fa-circle-xmark xcart"></i
+        ></span>
+        <p>Your Cart</p>
+        <div class="cart-content" id="cart"></div>
+        <div class="cart-footer">
+          <div class="total">Your Total:- $ <span id="total">100</span></div>
+          <button id="clearCart">Clear Cart</button>
+        </div>
+      </div>
+    </aside>
+
+    <main id="products">
+      <div class="products-header">
+        <h3>Our Products</h3>
+      </div>
+      <div class="main_products">
+        <div class="product">
+          <div class="image">
+            <img src="./images/product-1.jpeg" alt="" />
+            <button>Add To Cart</button>
+          </div>
+          <h3>HI</h3>
+          <h4>23$</h4>
+        </div>
+        <div class="product">
+          <div class="image">
+            <img src="./images/product-1.jpeg" alt="" />
+            <button>Add To Cart</button>
+          </div>
+          <h3>HI</h3>
+          <h4>23$</h4>
+        </div>
+        <div class="product">
+          <div class="image">
+            <img src="./images/product-1.jpeg" alt="" />
+            <button>Add To Cart</button>
+          </div>
+          <h3>HI</h3>
+          <h4>23$</h4>
+        </div>
+        <div class="product">
+          <div class="image">
+            <img src="./images/product-1.jpeg" alt="" />
+            <button>Add To Cart</button>
+          </div>
+          <h3>HI</h3>
+          <h4>23$</h4>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
