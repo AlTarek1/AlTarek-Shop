@@ -12,6 +12,13 @@
       href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap"
       rel="stylesheet"
     />
+    <!-- Special Font  -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap"
+      rel="stylesheet"
+    />
     <!-- Font AWesome  -->
     <script
       src="https://kit.fontawesome.com/d72e93fa06.js"
@@ -23,23 +30,29 @@
     <script defer src="main.js"></script>
   </head>
   <body>
+    <!-- Start Header  -->
     <header>
-      <img src="./images/hero-bcg.jpeg" alt="" />
-      <nav>
-        <div class="navbar">
-          <i class="fa-solid fa-bars"></i>
-          <h4>Yousef <span> Shop</span></h4>
-          <div class="cart-menu">
-            <i class="fa-solid fa-cart-shopping" id="cart_menu"></i>
-            <span id="cart_menu_cnt">0</span>
+      <div class="container">
+        <img src="./images/hero-bcg.jpeg" alt="" />
+        <nav>
+          <div class="navbar">
+            <i class="fa-solid fa-bars"></i>
+            <h4>Yousef <span> Shop</span></h4>
+            <div class="cart-menu">
+              <i class="fa-solid fa-cart-shopping" id="cart_menu"></i>
+              <span id="cart_menu_cnt">0</span>
+            </div>
           </div>
+        </nav>
+        <div class="header-text">
+          <h1>Furniture Collection</h1>
+          <a href="#products">Shop Now</a>
         </div>
-      </nav>
-      <div class="header-text">
-        <h1>Furniture Collection</h1>
-        <a href="#products">Shop Now</a>
       </div>
     </header>
+    <!-- End Of Header  -->
+
+    <!-- Start Cart  -->
     <aside class="overlay">
       <div class="cart">
         <span class="close-cart">
@@ -53,45 +66,14 @@
         </div>
       </div>
     </aside>
-
+    <!-- End Of Cart  -->
+    <!-- Start Products  -->
     <main id="products">
       <div class="products-header">
         <h3>Our Products</h3>
       </div>
-      <div class="main_products">
-        <div class="product">
-          <div class="image">
-            <img src="./images/product-1.jpeg" alt="" />
-            <button>Add To Cart</button>
-          </div>
-          <h3>HI</h3>
-          <h4>23$</h4>
-        </div>
-        <div class="product">
-          <div class="image">
-            <img src="./images/product-1.jpeg" alt="" />
-            <button>Add To Cart</button>
-          </div>
-          <h3>HI</h3>
-          <h4>23$</h4>
-        </div>
-        <div class="product">
-          <div class="image">
-            <img src="./images/product-1.jpeg" alt="" />
-            <button>Add To Cart</button>
-          </div>
-          <h3>HI</h3>
-          <h4>23$</h4>
-        </div>
-        <div class="product">
-          <div class="image">
-            <img src="./images/product-1.jpeg" alt="" />
-            <button>Add To Cart</button>
-          </div>
-          <h3>HI</h3>
-          <h4>23$</h4>
-        </div>
-      </div>
+      <div class="main_products"></div>
     </main>
+    <!-- End Of Products  -->
   </body>
 </html>
