@@ -73,28 +73,26 @@ function hideCart() {
 // End Of Show And Hide Cart
 
 // Dealing with Text in Products button
-function BtnText() {
-  if (addCartButtons.length) {
-    addCartButtons.forEach((btn) => {
-      const inCart = cart[btn.dataset.i];
-      console.log(btn.dataset.i)
-      if (inCart.amount) {
-        btn.innerText = "In Cart";
-        btn.disabled = true;
-      } else {
-        btn.innerText = "Add To Cart";
-        btn.disabled = false;
-      }
-    });
-  }
+function BtnText(btns) {
+  btns.forEach((btn) => {
+    const inCart = cart[btn.dataset.i];
+    console.log(btn.dataset.i);
+    if (inCart.amount) {
+      btn.innerText = "In Cart";
+      btn.disabled = true;
+    } else {
+      btn.innerText = "Add To Cart";
+      btn.disabled = false;
+    }
+  });
 }
 //End Of Dealing with Text in Products button
 
 // Functionality Of Products Buttons
 function productBtn() {
   const btns = document.querySelectorAll("#add_to_cart");
-  addCartButtons = btns;    BtnText();
-
+  addCartButtons = btns;
+  BtnText(btns);
   btns.forEach((btn) => {
     btn.addEventListener("click", (e) => {
       const id = e.target.dataset.i;
@@ -105,6 +103,7 @@ function productBtn() {
       showCart();
     });
   });
+  return btns;
 }
 //End OF Functionality Of Products Buttons
 
@@ -115,7 +114,7 @@ function cartFunctions(e) {
     element.nextElementSibling.innerText--;
     cart[element.dataset.i].amount--;
     if (element.nextElementSibling.innerText === "0") {
-      BtnText();
+      BtnText(addCartButtons);
       deleteChild(element);
     }
   } else if (element.classList.contains("plus")) {
@@ -124,7 +123,7 @@ function cartFunctions(e) {
   } else if (element.classList.contains("x-item")) {
     cart[element.dataset.i].amount = 0;
 
-    BtnText();
+    BtnText(addCartButtons);
     deleteChild(element);
   }
   saveCart(cart);
@@ -167,7 +166,7 @@ function clearAllCart() {
   cart = initCart;
   saveCart(cart);
   cartDOM.innerHTML = "";
-  BtnText();
+  BtnText(addCartButtons);
 
   Total();
   amountItems();
@@ -213,8 +212,8 @@ document.addEventListener("DOMContentLoaded", () => {
       cart = getCart();
     })
     .then(() => productBtn())
-    .then(() => {
-      BtnText();
+    .then((btns) => {
+      BtnText(btns);
 
       amountItems();
     });
