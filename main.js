@@ -1,3 +1,4 @@
+// Html ELements
 const cartMenu = document.querySelector("#cart_menu");
 const xCartMenu = document.querySelector(".xcart");
 const show = document.querySelector(".overlay");
@@ -6,13 +7,28 @@ const cartDOM = document.querySelector("#cart");
 const totalDOM = document.querySelector("#total");
 const clearCart = document.querySelector("#clearCart");
 const ProductsDOM = document.querySelector(".main_products");
+// End of Html ELements
+// Save Cart in Local Storage
+function saveCart(cart) {
+  return localStorage.setItem("cart", JSON.stringify(cart));
+}
 
-let cart = localStorage.getItem("cart")
+// End Of Save Cart in Local Storage
+let initCart = [];
+// Get Cart Items From Local Storage
+const getCart = () =>
+  localStorage.getItem("cart")
     ? JSON.parse(localStorage.getItem("cart"))
-    : [],
+    : initCart;
+//End OF Get Cart Items From Local Storage
+
+// Our Variables
+let cart = getCart(),
   addCartButtons = [],
   currentProducts = [];
+//End Of Our Variables
 
+// Get Products From Json File
 async function getAllProducts() {
   try {
     const res = await fetch("products.json");
@@ -24,15 +40,17 @@ async function getAllProducts() {
     console.log(e);
   }
 }
+// End of Get Products From Json File
 
+// Load Products In Our Products Section
 function loadProducts(products) {
   let productsHTML = "";
-  products.forEach((product) => {
+  products.forEach((product, i) => {
     productsHTML += `
       <div class="product">
       <div class="image">
         <img src="${product.image}" alt="" />
-        <button data-id="${product.id}" id="add_to_cart">Add To Cart</button>
+        <button data-i="${i}" id="add_to_cart">Add To Cart</button>
       </div>
       <h3>${product.title}</h3>
       <h4>${product.price}$</h4>
@@ -40,6 +58,9 @@ function loadProducts(products) {
   });
   ProductsDOM.innerHTML = productsHTML;
 }
+// End OF Load Products In Our Products Section
+
+// Show And Hide Cart
 function showCart() {
   show.classList.add("visible");
   loadCart();
@@ -49,11 +70,14 @@ function hideCart() {
   show.classList.remove("visible");
   amountItems();
 }
+// End Of Show And Hide Cart
+
+// Dealing with Text in Products button
 function BtnText() {
   if (addCartButtons.length) {
     addCartButtons.forEach((btn) => {
-      const inCart = cart.find((item) => item.id === btn.dataset.id);
-      if (inCart) {
+      const inCart = cart[btn.dataset.i];
+      if (inCart.amount) {
         btn.innerText = "In Cart";
         btn.disabled = true;
       } else {
@@ -63,71 +87,71 @@ function BtnText() {
     });
   }
 }
+//End Of Dealing with Text in Products button
+
+// Functionality Of Products Buttons
 function productBtn() {
   const btns = document.querySelectorAll("#add_to_cart");
   addCartButtons = btns;
   btns.forEach((btn) => {
-    const inCart = cart.find((item) => item.id === btn.dataset.id);
-
-    if (inCart) {
-      btn.innerText = "In Cart";
-      btn.disabled = true;
-    } else {
-      btn.innerText = "Add To Cart";
-      btn.disabled = false;
-    }
+    BtnText();
     btn.addEventListener("click", (e) => {
-      const id = e.target.dataset.id;
-      console.log(e.target.innerText);
+      const id = e.target.dataset.i;
       e.target.innerText = "In Cart";
-      console.log(e.target.innerText);
-
       e.target.disabled = true;
-      cart.push({ id, amount: 1 });
+      cart[e.target.dataset.i].amount++;
       saveCart(cart);
       showCart();
     });
   });
 }
-function cartFunctions(e) {
-  if (e.target.classList.contains("minus")) {
-    e.target.nextElementSibling.innerText =
-      parseInt(e.target.nextElementSibling.innerText) - 1;
-    if (e.target.nextElementSibling.innerText === "0") {
-      cart = cart.filter((item) => item.id !== e.target.dataset.id);
-      deleteChild(e.target);
-      BtnText();
-    } else {
-      cart.forEach((item) => {
-        if (item.id === e.target.dataset.id) item.amount--;
-      });
-    }
-  } else if (e.target.classList.contains("plus")) {
-    e.target.previousElementSibling.innerText =
-      parseInt(e.target.previousElementSibling.innerText) + 1;
-    cart.forEach((item) => {
-      if (item.id === e.target.dataset.id) item.amount++;
-    });
-  } else if (
-    e.target.classList.contains("x-item") &&
-    e.target.parentElement.parentElement
-  ) {
-    cart = cart.filter((item) => item.id !== e.target.dataset.id);
-    BtnText();
+//End OF Functionality Of Products Buttons
 
-    e.target.parentElement.parentElement.removeChild(e.target.parentElement);
+// Cart Functionality
+function cartFunctions(e) {
+  let element = e.target;
+  if (element.classList.contains("minus")) {
+    element.nextElementSibling.innerText--;
+    cart[element.dataset.i].amount--;
+    if (element.nextElementSibling.innerText === "0") {
+      BtnText();
+      deleteChild(element);
+    }
+  } else if (element.classList.contains("plus")) {
+    element.previousElementSibling.innerText++;
+    cart[element.dataset.i].amount++;
+  } else if (element.classList.contains("x-item")) {
+    cart[element.dataset.i].amount = 0;
+
+    BtnText();
+    deleteChild(element);
   }
   saveCart(cart);
+
   Total();
   amountItems();
 }
+//End of Cart Functionality
+function deleteChild(child) {
+  let parent = child.parentElement,
+    childToRemove = child;
+
+  while (!parent.classList.contains("cart-content")) {
+    parent = parent.parentElement;
+    childToRemove = childToRemove.parentElement;
+  }
+  parent.removeChild(childToRemove);
+}
+// Total Of Cart Products
 function Total() {
   let tempTotal = 0;
   cart.forEach((e) => {
-    tempTotal += currentProducts[e.id - 1].price * e.amount;
+    tempTotal += currentProducts[e.indx].price * e.amount;
   });
   totalDOM.innerText = parseFloat(tempTotal).toFixed(2);
 }
+//End Of Total Of Cart Products
+// amount of items in Cart
 function amountItems() {
   let tempAmount = 0;
   cart.forEach((e) => {
@@ -135,56 +159,57 @@ function amountItems() {
   });
   cartMenuCnt.innerText = tempAmount;
 }
+//End of amount of items in Cart
+
+// Clear All Cart Button
 function clearAllCart() {
-  cart = [];
+  cart = initCart;
   saveCart(cart);
   cartDOM.innerHTML = "";
-  Total();
-  amountItems();
   BtnText();
 
+  Total();
+  amountItems();
   hideCart();
 }
-function deleteChild(child) {
-  child.parentElement.parentElement.parentElement.parentElement.removeChild(
-    child.parentElement.parentElement.parentElement
-  );
-}
+//End Of Clear All Cart Button
+
+// Load Cart
 function loadCart() {
   const cartItem = cart
     .map((item) => {
-      let ele;
-      currentProducts.forEach((e) => {
-        if (e.id === item.id) ele = e;
-      });
-      return `
+      let ele = currentProducts[item.indx];
+      if (item.amount)
+        return `
       <div class="cart-item">
    <img src="${ele.image}" alt="" />
    <div class="info">
      <h4>${ele.title}</h4>
      <h5>${ele.price}$</h5>
      <div class="chnge">
-       <i class="fa-solid fa-minus minus" data-id=${item.id}></i>
+       <i class="fa-solid fa-minus minus" data-i=${item.indx}></i>
        <span>${item.amount}</span>
-       <i class="fa-solid fa-plus plus" data-id=${item.id}></i>
+       <i class="fa-solid fa-plus plus" data-i=${item.indx}></i>
      </div>
    </div>
-   <i class="fa-regular fa-circle-xmark x-item" data-id=${item.id}></i>
+   <i class="fa-regular fa-circle-xmark x-item" data-i=${item.indx}></i>
  </div>`;
     })
     .join("");
   cartDOM.innerHTML = cartItem;
   amountItems();
 }
+// End Of Load Cart
 
-function saveCart(cart) {
-  return localStorage.setItem("cart", JSON.stringify(cart));
-}
-
+// Loading Proucts After Dom Content is Loaded
 document.addEventListener("DOMContentLoaded", () => {
   getAllProducts()
     .then((items) => {
       loadProducts(items);
+      initCart = items.map((item, i) => {
+        return { id: item.id, amount: 0, indx: i };
+      });
+      cart = getCart();
     })
     .then(() => productBtn())
     .then(() => {
@@ -193,7 +218,11 @@ document.addEventListener("DOMContentLoaded", () => {
       amountItems();
     });
 });
+// End OF Loading Proucts After Dom Content is Loaded
+
+// Some Events
 cartMenu.addEventListener("click", showCart);
 xCartMenu.addEventListener("click", hideCart);
 clearCart.addEventListener("click", clearAllCart);
 cartDOM.addEventListener("click", (e) => cartFunctions(e));
+//End Of Some Events
